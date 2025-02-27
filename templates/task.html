@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>{% if task_type == 'napi' %}Napi{% else %}Heti{% endif %} feladatlista</h2>
+<form method="POST">
+    <label>Dátum (YYYY.MM.DD.):</label><br>
+    <input type="text" name="date" required><br><br>
+    <button type="submit">Lekérdezés</button>
+</form>
+{% if tasks %}
+    <ul>
+        {% for task in tasks %}
+        <li>[{{ task.scheduled_time.strftime('%Y.%m.%d. %H:%M') }}] {{ task.task_name }} (Rendelés: {{ task.order.rendeles_id }})</li>
+        {% endfor %}
+    </ul>
+{% endif %}
+{% endblock %}

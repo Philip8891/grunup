@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container">
+    <h2><i class="fas fa-info-circle"></i> Rendelés részletei</h2>
+    <p><strong>Rendelési szám:</strong> {{ order.rendeles_id }}</p>
+    <p><strong>Partner:</strong> {{ order.partner }} ({{ order.partner_szam }})</p>
+    <p><strong>Termék:</strong> {{ order.product.name }}</p>
+    <p><strong>Rendelt mennyiség:</strong> {{ order.mennyiseg }} db</p>
+    <p><strong>Szállítás dátuma:</strong> {{ order.szallitas.strftime('%Y-%m-%d %H:%M') }}</p>
+    <h3><i class="fas fa-tasks"></i> Ütemfeladatok</h3>
+    {% if tasks %}
+        <ul>
+            {% for task in tasks %}
+                <li><i class="fas fa-angle-right"></i> {{ task.task_name }}: {{ task.scheduled_time.strftime('%Y-%m-%d %H:%M') }}</li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p><i class="fas fa-info-circle"></i> Nincsenek ütemfeladatok.</p>
+    {% endif %}
+    <button type="button" onclick="window.print()"><i class="fas fa-print"></i> Nyomtatás</button>
+</div>
+{% endblock %}

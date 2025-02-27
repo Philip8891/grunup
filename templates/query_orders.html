@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container">
+    <h2><i class="fas fa-search"></i> Rendelések lekérdezése</h2>
+    <form method="POST">
+        <label>Rendelési szám:</label>
+        <input type="text" name="rendeles_id" placeholder="Rendelési szám">
+        <label>Partner neve:</label>
+        <input type="text" name="partner" placeholder="Partner neve">
+        <label>Termék neve:</label>
+        <input type="text" name="product_name" placeholder="Termék neve">
+        <label>Szállítás dátuma (YYYY-MM-DD):</label>
+        <input type="date" name="szallitas_date">
+        <br><br>
+        <button type="submit"><i class="fas fa-search"></i> Lekérdezés</button>
+    </form>
+    {% if orders %}
+        <h3>Eredmények:</h3>
+        <ul>
+            {% for order in orders %}
+                <li>
+                    <strong>{{ order.rendeles_id }}</strong> – {{ order.partner }} – Szállítás: {{ order.szallitas.strftime('%Y-%m-%d %H:%M') }}
+                    <a href="{{ url_for('order_detail', order_id=order.id) }}" class="button"><i class="fas fa-info-circle"></i> Részletek</a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% elif orders is not none %}
+        <p><i class="fas fa-info-circle"></i> Nincs találat.</p>
+    {% endif %}
+</div>
+{% endblock %}

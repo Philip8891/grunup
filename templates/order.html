@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container">
+    <h2><i class="fas fa-shopping-cart"></i> Új rendelés</h2>
+    {% if schedule %}
+        <h3><i class="fas fa-clock"></i> Ütemterv</h3>
+        <ul>
+            {% for phase in ["Áztatás kezdete", "Csírázás kezdete", "Sötét fázis kezdete", "Fény alatti növekedés kezdete", "Betakarítás (Szállítás)"] %}
+                <li><i class="fas fa-angle-right"></i> {{ phase }}: {{ schedule[phase].strftime('%Y.%m.%d. %H:%M') }}</li>
+            {% endfor %}
+        </ul>
+        <a href="{{ url_for('order') }}" class="button"><i class="fas fa-sync-alt"></i> Új rendelés felvétele</a>
+    {% else %}
+        <form method="POST">
+            <label>Rendelési szám:</label><br>
+            <input type="text" name="rendeles_id" required><br>
+            <label>Partner neve:</label><br>
+            <input type="text" name="partner" required><br>
+            <label>Partner száma (Kundennummer):</label><br>
+            <input type="text" name="partner_szam" required><br>
+            <label>Szállítás dátuma (YYYY.MM.DD. HH:MM):</label><br>
+            <input type="text" name="szallitas" required><br>
+            <label>Rendelt mennyiség:</label><br>
+            <input type="number" name="mennyiseg" required><br>
+            <label>Termék kiválasztása:</label><br>
+            <select name="product_id">
+                {% for prod in products %}
+                    <option value="{{ prod.id }}">{{ prod.name }}</option>
+                {% endfor %}
+            </select><br><br>
+            <button type="submit"><i class="fas fa-paper-plane"></i> Rendelés elküldése</button>
+        </form>
+    {% endif %}
+</div>
+{% endblock %}

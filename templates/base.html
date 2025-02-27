@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <title>Mikrozöld Ütemező</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <!-- Font Awesome ikonokhoz -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <header>
+        <h1><i class="fas fa-seedling"></i> Mikrozöld Termesztési Ütemező Rendszer</h1>
+        <nav>
+            <a href="{{ url_for('index') }}"><i class="fas fa-home"></i> Főoldal</a> |
+            <a href="{{ url_for('order') }}"><i class="fas fa-shopping-cart"></i> Új rendelés</a> |
+            <a href="{{ url_for('create_product_route') }}"><i class="fas fa-plus"></i> Új termék</a> |
+            <a href="{{ url_for('modify_product_route') }}"><i class="fas fa-edit"></i> Termék módosítása</a> |
+            <a href="{{ url_for('daily_tasks') }}"><i class="fas fa-calendar-day"></i> Napi feladatlista</a> |
+            <a href="{{ url_for('weekly_tasks') }}"><i class="fas fa-calendar-week"></i> Heti feladatlista</a> |
+            <a href="{{ url_for('query_orders') }}"><i class="fas fa-search"></i> Rendelések lekérdezése</a>
+        </nav>
+    </header>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <div class="flashes">
+          {% for category, message in messages %}
+            <p class="flash {{ category }}"><i class="fas fa-info-circle"></i> {{ message }}</p>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+</body>
+</html>

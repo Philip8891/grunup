@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container">
+    {% if task_type == 'napi' %}
+        <h2><i class="fas fa-calendar-day"></i> Napi feladatlista</h2>
+        <form method="POST">
+            <label>Dátum kiválasztása:</label><br>
+            <input type="date" name="date" required value="{{ selected_date|default('', true) }}">
+            <br><br>
+            <button type="submit"><i class="fas fa-search"></i> Lekérdezés</button>
+            <button type="button" onclick="window.print()"><i class="fas fa-print"></i> Nyomtatás</button>
+        </form>
+        {% if tasks %}
+            <ul>
+                {% for task in tasks %}
+                    <li><i class="fas fa-tasks"></i> [{{ task.scheduled_time.strftime('%Y-%m-%d %H:%M') }}] {{ task.task_name }} (Rendelés: {{ task.order.rendeles_id }})</li>
+                {% endfor %}
+            </ul>
+        {% elif selected_date %}
+            <p><i class="fas fa-info-circle"></i> Nincs feladat a kiválasztott napon.</p>
+        {% endif %}
+    {% elif task_type == 'heti' %}
+        <h2><i class="fas fa-calendar-week"></i> Heti feladatlista</h2>
+        <form method="POST">
+            <label>Kezdő dátum:</label><br>
+            <input type="date" name="start_date" required value="{{ start_date|default('', true) }}"><br><br>
+            <label>Záró dátum:</label><br>
+            <input type="date" name="end_date" required value="{{ end_date|default('', true) }}"><br><br>
+            <button type="submit"><i class="fas fa-search"></i> Lekérdezés</button>
+            <button type="button" onclick="window.print()"><i class="fas fa-print"></i> Nyomtatás</button>
+        </form>
+        {% if tasks_by_day %}
+            {% for day, tasks in tasks_by_day|dictsort %}
+                <h3>{{ day.strftime('%Y-%m-%d') }}</h3>
+                <ul>
+                    {% for task in tasks %}
+                        <li><i class="fas fa-tasks"></i> [{{ task.scheduled_time.strftime('%H:%M') }}] {{ task.task_name }} (Rendelés: {{ task.order.rendeles_id }})</li>
+                    {% endfor %}
+                </ul>
+            {% endfor %}
+        {% elif start_date and end_date %}
+            <p><i class="fas fa-info-circle"></i> Nincs feladat a kiválasztott időszakban.</p>
+        {% endif %}
+    {% endif %}
+</div>
+{% endblock %}
